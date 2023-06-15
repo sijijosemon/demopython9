@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#id_department').change(function() {
+                var department = $(this).val();
+                $.ajax({
+                    url: '/get_courses/',
+                    data: {
+                        'department': department
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        var options = '';
+                        $.each(data.courses, function(index, course) {
+                            options += '<option value="' + course[0] + '">' + course[1] + '</option>';
+                        });
+                        $('#id_course').html(options);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body bgcolor="Lightskyblue">
+    <h1>User Registration Form</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+        <input type="button" value="Logout" onclick="location.href='logout';">
+    </form>
+</body>
+</html>
